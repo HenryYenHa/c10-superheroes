@@ -4,8 +4,12 @@ import passport from "passport";
 import superheroRouter from "./routes/superhero.js";
 import userRouter from "./routes/auth.js";
 import path from "path";
+// import tokenCheck from "./lib/tokenCheck.js";
 const app = express();
-
+const tokenCheck = (req, res, next) => {
+  if (req.cookie) next(); // If cookie exists, continue
+  res.send(401); // Throw error
+};
 const __dirname = path.resolve();
 
 const pathToBuild = path.join(__dirname, "../frontend/dist");
@@ -28,8 +32,8 @@ app.use("*", (req, res, next) => {
   console.log("path is", req.originalUrl);
   next();
 });
-app.use("/api/superhero", superheroRouter);
-app.use("/api/user", userRouter);
+app.use("/api/superhero", tokenCheck, superheroRouter);
+app.use("/api/user", tokenCheck, userRouter);
 app.get("/test", (req, res) => {
   res.send("test endpoint working");
 });

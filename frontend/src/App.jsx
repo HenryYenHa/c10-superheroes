@@ -17,7 +17,11 @@ function App() {
       <NavBar />
       Another conflict
       <Routes>
-        <Route path="/" element={<SuperheroList />} />
+        <Route path="/" element={
+          <Authenticated>
+            <SuperheroList />
+          </Authenticated>
+        } />
         <Route path="/detail/:id" element={<SuperheroDetail />} />
         <Route
           path="/add-superhero"
